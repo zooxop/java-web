@@ -101,4 +101,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Eclipse Server(tomcat)
+Servers
 # End of https://www.toptal.com/developers/gitignore/api/macos,eclipse,java-web
