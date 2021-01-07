@@ -14,7 +14,12 @@ public class ExtractFromSelect {
 		
 		ResultSetMetaData rsmd = null;
 		try {	
-			String sqlText = "Select A.EEA_EXAM_DT AS WOW, B.ERI_EXAM_SQ AS SEQ from ET_EXAM_ACPT A Inner join ET_RSLT_ITEM B on A.EEA_EXAM_DT = B.ERI_EXAM_DT and A.EEA_EXAM_SQ = B.ERI_EXAM_SQ and 1=0";
+			String sqlText = "";
+			
+			//sqlText += "Select A.EEA_EXAM_DT AS WOW, B.ERI_EXAM_SQ AS SEQ from ET_EXAM_ACPT A ";
+			//sqlText += " Inner join ET_RSLT_ITEM B on A.EEA_EXAM_DT = B.ERI_EXAM_DT and A.EEA_EXAM_SQ = B.ERI_EXAM_SQ and 1=0";
+			
+			sqlText += "select * from it_hospital";
 			
 			conn = DbCon.getConnection();
 			pstm = conn.prepareStatement(sqlText);
@@ -29,7 +34,12 @@ public class ExtractFromSelect {
 //			}
 			
 			for (int i = 1; i <= columnCnt; i++) {
-				System.out.println(rsmd.getColumnName(i));
+				System.out.println("ColumnName : " + rsmd.getColumnName(i));
+				System.out.println("Size : " + rsmd.getColumnDisplaySize(i));
+				System.out.println("TypeName : " + rsmd.getColumnTypeName(i));
+				System.out.println("Type : " + Integer.toString(rsmd.getColumnType(i)));
+				System.out.println("Scale : " + Integer.toString(rsmd.getScale(i)));
+				System.out.println("========");
 			}
 			
 			System.out.println(Integer.toString(columnCnt));
