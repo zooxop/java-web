@@ -16,7 +16,7 @@ public class UserDAO extends HttpServlet {
 	private DataSource dataFactory;
 	private Connection conn;
 	private PreparedStatement pstmt;
-	
+	private ResultSet rs;
 	public UserDAO() {
 		try {
 			Context ctx = new InitialContext();
@@ -36,7 +36,7 @@ public class UserDAO extends HttpServlet {
 			String query = "Select * from IT_AUTH_USER";
 			
 			pstmt = conn.prepareStatement(query);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
 				String iau_emp_no = rs.getString("IAU_EMP_NO");
