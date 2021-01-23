@@ -1,7 +1,7 @@
 package api;
 
 //model 개발 시 상속시킬 추상 클래스
-abstract class API3Tier {
+public abstract class API3Tier {
 	String DataType;  //xml, json 등 구분.
 	
 	public String getDataType() {
