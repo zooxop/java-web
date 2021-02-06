@@ -21,7 +21,7 @@ import org.xml.sax.InputSource;
 
 import api.API3Tier;
 
-public class ApiModel extends API3Tier{
+public class ApiJSON extends API3Tier{
 	
 	private StringReader sr;
 	private HttpServletRequest request;
@@ -43,7 +43,7 @@ public class ApiModel extends API3Tier{
 		this.sr = sr;
 	}
 
-	public ApiModel(StringReader stringReader, HttpServletRequest pRequest, HttpServletResponse pResponse) throws ServletException, IOException {
+	public ApiJSON(StringReader stringReader, HttpServletRequest pRequest, HttpServletResponse pResponse) throws ServletException, IOException {
 		setSr(stringReader);
 		setRequest(request);
 		setResponse(response);
@@ -58,58 +58,7 @@ public class ApiModel extends API3Tier{
 		InputSource is = new InputSource(sr);
 	
 		try {
-			DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			
-			Document doc = docBuilder.parse(is);
-			doc.getDocumentElement().normalize();  //xml정규화
-			XPath xpath = XPathFactory.newInstance().newXPath();
-			
-			Element root = doc.getDocumentElement();
-
-			String dataType = checkValidParam("dataType", root, doc);
-			String count = checkValidParam("count", root, doc);
-			String schemaCode = checkValidParam("schemaCode", root, doc);
-			
-			int cnt = Integer.parseInt(count);
-			
-			String tagName = "";
-			Node nodeData = null;
-			NodeList nodeList = null;
-			Node node = null;
-			
-			String strNodeName = "";
-			String strNodeValue = "";
-			String strMethodName = "";
-			
-			htData.put("dataType", dataType);
-			htData.put("count", count);
-			htData.put("schemaCode", schemaCode);
-			
-			for (int i = 0; i < cnt; i++) {
-				nodeData = doc.getElementsByTagName("data_" + (i+1)).item(0);
-				nodeList = nodeData.getChildNodes();
-				
-				HashMap<String, String> htMethod  = new HashMap<String, String>();
-				
-				for (int j = 0; j < nodeList.getLength(); j++) {
-					node = nodeList.item(j);
-					
-					if(node.getNodeType() == Node.ELEMENT_NODE) {
-						
-						strNodeName = node.getNodeName();
-						strNodeName = strNodeName.toUpperCase();
-						
-						strNodeValue = node.getTextContent();
-						htMethod.put(strNodeName, strNodeValue);
-						
-						if (strNodeName.equals("METHODNAME")) {
-							strMethodName = strNodeValue;
-						}
-					}
-				}
-				
-				request.setAttribute("htMethod_" + (i+1), htMethod);
-			}
+			//JSON (GSON) 사용하기
 		} catch (Exception e) {
 			e.getStackTrace();
 		}

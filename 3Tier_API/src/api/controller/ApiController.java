@@ -20,7 +20,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import api.model.ApiModel;
+import api.model.ApiADO;
 
 
 
@@ -60,9 +60,9 @@ public class ApiController {
 			
 			//이 아래로 전부다 인터페이스로 넘기자
 			
-			ApiModel apiModel = new ApiModel(sr, request, response);
+			ApiADO apiAdo = new ApiADO(sr, request, response);
 			
-			apiModel.getRequest();  //여기서 리턴 받는걸 view 로 넘기자.
+			apiAdo.getRequest();  //여기서 리턴 받는걸 view 로 넘기자.
 			
 		} catch (Exception e) {
 			
