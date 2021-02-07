@@ -1,29 +1,28 @@
 package api.model;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.HashMap;
+import java.sql.Connection;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathFactory;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import api.API3Tier;
+import api.VO.PtntInfoURLVO;
 
 public class ApiJSON extends API3Tier{
 	
-	private StringReader sr;
+	private String JsonStr;
+	private Connection conn;
+	
+	public void setJsonStr(String jsonStr) {
+		JsonStr = jsonStr;
+	}
+
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 
@@ -39,12 +38,8 @@ public class ApiJSON extends API3Tier{
 		this.response = response;
 	}
 
-	public void setSr(StringReader sr) {
-		this.sr = sr;
-	}
 
-	public ApiJSON(StringReader stringReader, HttpServletRequest pRequest, HttpServletResponse pResponse) throws ServletException, IOException {
-		setSr(stringReader);
+	public ApiJSON(HttpServletRequest pRequest, HttpServletResponse pResponse) throws ServletException, IOException {
 		setRequest(request);
 		setResponse(response);
 	}
@@ -53,12 +48,29 @@ public class ApiJSON extends API3Tier{
 	public void getRequest() {  //이건 추상이 맞다.
 		
 		DataSource dataFactory = dbConn();  //이런식으로 디비 연결?
+		 
+		String reqPath = request.getServletPath();
 		
-		HashMap<String, Object> htData = new HashMap<String, Object>();
-		InputSource is = new InputSource(sr);
-	
 		try {
+			
+			if (reqPath.equals("/ptntInfoURL")) {
+				PtntInfoURLVO pInfo = new PtntInfoURLVO();
+				
+				String RESNO1 = request.getParameter("RESNO1");
+				String RESNO2 = request.getParameter("RESNO2");
+				
+				conn = dataFactory.getConnection();
+				
+				//인적정보 쿼리한 다음에 VO에 set 하고 json으로 파싱시켜서 출력
+			} else if(reqPath.equals("/ordrInfoURL")) {
+				
+			}
+			
 			//JSON (GSON) 사용하기
+			JsonParser Parser = new JsonParser();
+			
+			JsonObject jsonObj = (JsonObject) Parser.parse(JsonStr);
+			
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
@@ -83,23 +95,6 @@ public class ApiJSON extends API3Tier{
 		
 	}
 	
-	// 파라메터 유효성 검사.
-	private String checkValidParam(String item, Element root, Document document) {
-		String TempStr = "";
-		NodeList childSchema = root.getChildNodes();
-		for (int i = 0; i < childSchema.getLength(); i++){
-			Node nodeSchema = childSchema.item(i);
-
-			if (nodeSchema.getNodeType() == Node.ELEMENT_NODE){
-				Element elementSchema = (Element)nodeSchema;
-
-				if (elementSchema.getNodeName().equals(item)){
-					TempStr = document.getElementsByTagName(item).item(0).getTextContent();
-					break;
-				}
-			}
-		}
-		return TempStr;
-	}
+	
 
 }

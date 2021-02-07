@@ -1,51 +1,45 @@
 package api.controller;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.HashMap;
 
+import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathFactory;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-
-import api.model.ApiADO;
+import api.model.ApiJSON;
 
 
-
-
-@WebServlet("/NurionAPI_KUMC_AA.jsp")
-public class ApiController {
+@WebServlet({ "/ptntInfoURL", "/ordrInfoURL" })
+public class ApiJSONController extends HttpServlet {
 	
 	public void init(ServletConfig config) throws ServletException {
-		
+		// TODO Auto-generated method stub
 	}
-	
+
 	public void destroy() {
-		
+		// TODO Auto-generated method stub
 	}
-	
+
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//doHandle(request, response);
-		//method "get" is not valid.
+		// TODO Auto-generated method stub
+		doHandle(request, response);
 	}
-	
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doHandle(request, response);
 	}
 	
 	private void doHandle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		request.setCharacterEncoding("utf-8");
 		
 		response.setContentType("text/html;charset=utf-8");
@@ -53,27 +47,16 @@ public class ApiController {
 		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
 		response.setHeader("Expires", "0");
 		
+		//String reqPath = request.getServletPath();
+		
 		try {
-			String strXml = request.getParameter("strXml");
+			ApiJSON apiJson = new ApiJSON(request, response);
 			
-			StringReader sr = new StringReader(strXml);
-			
-			//이 아래로 전부다 인터페이스로 넘기자
-			
-			ApiADO apiAdo = new ApiADO(sr, request, response);
-			
-			apiAdo.getRequest();  //여기서 리턴 받는걸 view 로 넘기자.
-			
+			apiJson.getRequest();  
 		} catch (Exception e) {
 			
 			
 		}
-		
-		//RequestDispatcher dispatch = request.getRequestDispatcher("/test01/listMembers.jsp");
-		//dispatch.forward(request, response);
-		
 	}
-	
-	
-	
+
 }
